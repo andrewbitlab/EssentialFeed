@@ -55,6 +55,7 @@
 		FECEFB4A2A449DA800AA0CD9 /* EssentialFeed.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = EssentialFeed.xctestplan; sourceTree = "<group>"; };
 		FECEFB4F2A44A0C500AA0CD9 /* EssentialFeedAPIEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedAPIEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FECEFB512A44A0C500AA0CD9 /* EssentialFeedAPIEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedAPIEndToEndTests.swift; sourceTree = "<group>"; };
+		FECEFB5A2A44A8D500AA0CD9 /* CI.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = CI.xctestplan; path = ../CI.xctestplan; sourceTree = "<group>"; };
 		FEFF6B352A43905800FDCD23 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +99,7 @@
 		FE5423472A26546E00F4455C = {
 			isa = PBXGroup;
 			children = (
+				FECEFB5A2A44A8D500AA0CD9 /* CI.xctestplan */,
 				FECEFB4A2A449DA800AA0CD9 /* EssentialFeed.xctestplan */,
 				FE5423532A26546E00F4455C /* EssentialFeed */,
 				FE54235F2A26546E00F4455C /* EssentialFeedTests */,
