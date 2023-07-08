@@ -9,7 +9,7 @@ import XCTest
 import EssentialFeed
 
 final class LoadFeedFromCacheUseCaseTests: XCTestCase {
-
+    
     func test_init_doesNotDeleteCacheUponCreation() {
         let (_, store) = makeSUT()
         
@@ -45,9 +45,9 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let feed = uniqueImageFeed()
         let currentDate = Date()
         let lessThanSevenDaysOldTimestamp = currentDate.adding(days: -7).adding(seconds: 1)
-
+        
         let (sut, store) = makeSUT(currentDate: { currentDate })
-
+        
         expect(sut, toCompleteWith: .success(feed.models), when: {
             store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
         })
@@ -69,12 +69,21 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         let feed = uniqueImageFeed()
         let currentDate = Date()
         let moreThanSevenDaysOldTimestamp = currentDate.adding(days: -7).adding(seconds: -1)
-
+        
         let (sut, store) = makeSUT(currentDate: { currentDate })
-
+        
         expect(sut, toCompleteWith: .success([]), when: {
             store.completeRetrieval(with: feed.local, timestamp: moreThanSevenDaysOldTimestamp)
         })
+    }
+    
+    func test_load_deletesCacheOnRetrievalError() {
+        let (sut, store) = makeSUT()
+        
+        sut.load { _ in }
+        store.completeRetrieval(with: anyNSError())
+        
+        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
 
     // MARK: - Helpers
