@@ -42,15 +42,26 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     func test_load_deliversCachedImagesOnLessThanSevenDaysOldCache() {
-        
         let feed = uniqueImageFeed()
         let currentDate = Date()
-        let lessThanSevenDaysTimestamp = currentDate.adding(days: 7).adding(seconds: -1)
+        let lessThanSevenDaysOldTimestamp = currentDate.adding(days: -7).adding(seconds: 1)
+
+        let (sut, store) = makeSUT(currentDate: { currentDate })
+
+        expect(sut, toCompleteWith: .success(feed.models), when: {
+            store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+        })
+    }
+    
+    func test_load_deliversNoImagesOnSevenDaysOldCache() {
+        let feed = uniqueImageFeed()
+        let currentDate = Date()
+        let sevenDaysOldTimestamp = currentDate.adding(days: -7)
+        
         let (sut, store) = makeSUT(currentDate: { currentDate })
         
-        
-        expect(sut, toCompleteWith: .success(feed.models), when: {
-            store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysTimestamp)
+        expect(sut, toCompleteWith: .success([]), when: {
+            store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTimestamp)
         })
     }
 
@@ -72,9 +83,11 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
             
             switch (receivedResult, expectedResult) {
             case let (.success(receivedFeed), .success(expectedFeed)):
-                XCTAssertEqual(receivedFeed, expectedFeed)
+                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
+                
             case let (.failure(receivedError), .failure(expectedError)):
-                XCTAssertEqual(receivedError as NSError?, expectedError as NSError?)
+                XCTAssertEqual(receivedError as NSError?, expectedError as NSError?, file: file, line: line)
+                
             default:
                 XCTFail("Expected matched results, got receivedResult: \(receivedResult) for expectedResult: \(expectedResult)", file: file, line: line)
             }
